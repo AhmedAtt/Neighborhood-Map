@@ -1,8 +1,8 @@
-#Cairo Downtown Map Project
+# Cairo Downtown Map Project
 
 ![Part of the Udacity Front-End Web Development Nanodegree](https://img.shields.io/badge/Udacity-Front--End%20Web%20Developer%20Nanodegree-02b3e4.svg)
 
-> Developed for Project Neighborhood Map project of the **Udacity Front-End Web Developer Nanodegree**.
+> Developed for Neighborhood Map project of the **Udacity Front-End Web Developer Nanodegree**.
 
 # Project Description
 This is the final Project in the Udacity front-End developer Nanodegree . The aim of this project is to create a neighborhood map with my locations of interest.
