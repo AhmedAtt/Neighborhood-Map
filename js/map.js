@@ -108,122 +108,123 @@ function addMarker(locationId) {
           '</div>' +
           '</div>';
         marker.infowindow = new google.maps.InfoWindow({
-
           content: contentString
         });
-
-      fail: function() {
+      },
+      error: function() {
         console.log("Error Loding Google Maps APi");
+
       }
-    })
-  };
-  getInfoWindowContent();
-  addMarkersAnimations(marker);
-  markersArr.push(marker);
+    });
+  }
+    getInfoWindowContent();
+    addMarkersAnimations(marker);
+    markersArr.push(marker);
+
 }
-//Handle ALl Markers Events
-//=============================================================================
-function addMarkersAnimations(marker) {
+  //Handle ALl Markers Events
+  //=============================================================================
+  function addMarkersAnimations(marker) {
 
-  //on mouse over show info window
-  marker.addListener('mouseover', function() {
-    this.infowindow.open(map, this);
-  });
-  //on mouse out hide info window
-  marker.addListener('mouseout', function() {
-    this.infowindow.close(map, this);
-  });
+    //on mouse over show info window
+    marker.addListener('mouseover', function() {
+      this.infowindow.open(map, this);
+    });
+    //on mouse out hide info window
+    marker.addListener('mouseout', function() {
+      this.infowindow.close(map, this);
+    });
 
-  //if marker is clicked trigger bounce with time out
-  marker.addListener('mouseover', toggleBounce);
+    //if marker is clicked trigger bounce with time out
+    marker.addListener('mouseover', toggleBounce);
 
-  function toggleBounce() {
-    if (marker.getAnimation() !== null) {
-      marker.setAnimation(null);
-    } else {
-      marker.setAnimation(google.maps.Animation.BOUNCE);
-      setTimeout(function() {
+    function toggleBounce() {
+      if (marker.getAnimation() !== null) {
         marker.setAnimation(null);
-      }, 3500);
+      } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {
+          marker.setAnimation(null);
+        }, 3500);
+      }
     }
+
   }
+  //=============================================================================
+  //MVVC part with knockoutJs
+  //=============================================================================
+  $(document).ready(function() {
 
-}
-//=============================================================================
-//MVVC part with knockoutJs
-//=============================================================================
-$(document).ready(function() {
-
-  //function to show all markers
-  function showAllMarkers() {
-    markersArr.forEach(function(marker) {
-      marker.setVisible(true);
-      animateMarker(marker);
-    });
-  }
-  //function to hide al markers
-  function hideAllMarkers() {
-    markersArr.forEach(function(marker) {
-      marker.setVisible(false);
-    });
-  }
-
-  var MapViewModel = {
-    query: ko.observable(""),
-    locationList: ko.observableArray(locations)
-  };
-
-
-  //Got help for this filter function from
-  //https://stackoverflow.com/questions/20857594/knockout-filtering-on-observable-array
-
-
-  MapViewModel.filteredLocations = ko.computed(function() {
-    hideAllMarkers();
-    var filter = this.query().toLowerCase();
-    if (!filter) {
-      showAllMarkers();
-      return this.locationList();
-    } else {
-      return ko.utils.arrayFilter(MapViewModel.locationList(), function(loc) {
-        if (loc.title.toLowerCase().indexOf(filter) >= 0) {
-          //show only the markers with names matching the search query
-          markersArr[locations.indexOf(loc)].setVisible(true);
-          animateMarker(markersArr[locations.indexOf(loc)]);
-        }
-        return loc.title.toLowerCase().indexOf(filter) >= 0;
+    //function to show all markers
+    function showAllMarkers() {
+      markersArr.forEach(function(marker) {
+        marker.setVisible(true);
+        animateMarker(marker);
       });
     }
-  }, MapViewModel);
-  ko.applyBindings(MapViewModel);
-});
-
-//when a location is clicked from the nav bar animation is triggered
-function focusOnMarker(event) {
-  markersArr.forEach(function(marker) {
-    if (marker.title == event.target.text) {
-      animateMarker(marker);
-      marker.infowindow.open(map, marker);
+    //function to hide al markers
+    function hideAllMarkers() {
+      markersArr.forEach(function(marker) {
+        marker.setVisible(false);
+      });
     }
 
+    var MapViewModel = {
+      query: ko.observable(""),
+      locationList: ko.observableArray(locations)
+    };
 
+
+    //Got help for this filter function from
+    //https://stackoverflow.com/questions/20857594/knockout-filtering-on-observable-array
+
+
+    MapViewModel.filteredLocations = ko.computed(function() {
+      hideAllMarkers();
+      var filter = this.query().toLowerCase();
+      if (!filter) {
+        showAllMarkers();
+        return this.locationList();
+      } else {
+        return ko.utils.arrayFilter(MapViewModel.locationList(), function(loc) {
+          if (loc.title.toLowerCase().indexOf(filter) >= 0) {
+            //show only the markers with names matching the search query
+            markersArr[locations.indexOf(loc)].setVisible(true);
+            animateMarker(markersArr[locations.indexOf(loc)]);
+          }
+          return loc.title.toLowerCase().indexOf(filter) >= 0;
+        });
+      }
+    }, MapViewModel);
+    ko.applyBindings(MapViewModel);
   });
 
-}
-//=============================================================================
-//function to trigger animation for marker
-function animateMarker(mrkr) {
-  mrkr.setAnimation(google.maps.Animation.BOUNCE);
-  setTimeout(function() {
-    mrkr.setAnimation(null);
-  }, 3500);
-}
+  //when a location is clicked from the nav bar animation is triggered
+  function focusOnMarker(event) {
+    markersArr.forEach(function(marker) {
+      if (marker.title == event.target.text) {
+        animateMarker(marker);
+        marker.infowindow.open(map, marker);
+      }
 
 
-function openNav() {
-  document.getElementById("mySidenav").style.width = "250px";
-}
+    });
 
-function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
-}
+  }
+  //=============================================================================
+  //function to trigger animation for marker
+  function animateMarker(mrkr) {
+    mrkr.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function() {
+      mrkr.setAnimation(null);
+    }, 3500);
+  }
+
+
+  function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+  }
+
+  function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+  }
