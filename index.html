@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!--Design Of the nav bar is based on the design from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_sidenav -->
+  <!--Markers and InfoWindow design is ispired from https://developers.google.com/maps/documentation/javascript/examples/infowindow-simple -->
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="js/map.js"></script>
+  <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
+  <title>Neighborhood Map</title>
+
+</head>
+
+<body>
+
+  <div id="mySidenav" class="sidenav">
+
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div class="search-bar">
+      <!-- -->
+      <input placeholder="Look around.." type="search" data-bind="value: query, valueUpdate: 'afterkeyup'" autocomplete="off">
+    </div>
+
+    <div id="loc-lst" class="locations-list" data-bind="foreach:filteredLocations">
+      <a href="#" data-bind="text:title" onclick="focusOnMarker(event)"></a>
+    </div>
+
+  </div>
+
+  <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+
+  <div id="map">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDf4KGR0DXRX-RwR-tTgcNH-Bau4j-1Eoc&v=3.31&callback=initMap">
+    </script>
+  </div>
+</body>
+
+</html>
