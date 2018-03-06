@@ -90,10 +90,8 @@ function addMarker(locationId) {
         blurb.find('a').each(function() {
           $(this).replaceWith($(this).html());
         });
-
         // remove any references
         blurb.find('sup').remove();
-
         // remove cite error
         blurb.find('.mw-ext-cite-error').remove();
         var retString = $(blurb).find('p');
@@ -110,20 +108,14 @@ function addMarker(locationId) {
           '</div>' +
           '</div>';
         marker.infowindow = new google.maps.InfoWindow({
-          //content: $(retString).text()
+
           content: contentString
         });
-        // marker.addListener('mouseover', function() {
-        //   this.infowindow.open(map, this);
-        // });
-        // marker.addListener('mouseout', function() {
-        //   this.infowindow.close(map, this);
-        // });
-      },
-      error: function(errorMessage) {
-        console.log(errorMessage);
+
+      fail: function() {
+        console.log("Error Loding Google Maps APi");
       }
-    });
+    })
   };
   getInfoWindowContent();
   addMarkersAnimations(marker);
@@ -131,7 +123,7 @@ function addMarker(locationId) {
 }
 //Handle ALl Markers Events
 //=============================================================================
-function addMarkersAnimations(marker){
+function addMarkersAnimations(marker) {
 
   //on mouse over show info window
   marker.addListener('mouseover', function() {
@@ -144,6 +136,7 @@ function addMarkersAnimations(marker){
 
   //if marker is clicked trigger bounce with time out
   marker.addListener('mouseover', toggleBounce);
+
   function toggleBounce() {
     if (marker.getAnimation() !== null) {
       marker.setAnimation(null);
@@ -206,12 +199,12 @@ $(document).ready(function() {
 });
 
 //when a location is clicked from the nav bar animation is triggered
-function focusOnMarker(event){
-  markersArr.forEach(function(marker){
-      if(marker.title==event.target.text){
-        animateMarker(marker);
-        marker.infowindow.open(map,marker);
-      }
+function focusOnMarker(event) {
+  markersArr.forEach(function(marker) {
+    if (marker.title == event.target.text) {
+      animateMarker(marker);
+      marker.infowindow.open(map, marker);
+    }
 
 
   });
